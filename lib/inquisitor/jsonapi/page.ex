@@ -17,7 +17,11 @@ defmodule Inquisitor.JsonApi.Page do
   defmacro __before_compile__(_env) do
     quote do
       def build_query_page(query, %{"number" => number, "size" => size}) do
-        number = String.to_integer(number)
+        number =
+          case number do
+            number when is_binary(number) -> String.to_integer(number)
+            number when is_integer(number) -> number
+          end
         number = number - 1
 
         Inquisitor.JsonApi.Page.offset_and_limit(query, offset: number, limit: size)
