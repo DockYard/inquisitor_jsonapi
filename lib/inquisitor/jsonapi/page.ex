@@ -17,14 +17,12 @@ defmodule Inquisitor.JsonApi.Page do
   defmacro __before_compile__(_env) do
     quote do
       def build_query_page(query, %{"number" => number, "size" => size}) do
-        number =
-          case number do
-            number when is_binary(number) -> String.to_integer(number)
-            number when is_integer(number) -> number
-          end
-        number = number - 1
+        number = Inquisitor.JsonApi.Page.typecast_as_integer(number)
+        size   = Inquisitor.JsonApi.Page.typecast_as_integer(size)
 
-        Inquisitor.JsonApi.Page.offset_and_limit(query, offset: number, limit: size)
+        offset = (number - 1) * size
+
+        Inquisitor.JsonApi.Page.offset_and_limit(query, offset: offset, limit: size)
       end
       def build_query_page(query, %{"offset" => offset, "limit" => limit}) do
         Inquisitor.JsonApi.Page.offset_and_limit(query, offset: offset, limit: limit)
@@ -40,4 +38,9 @@ defmodule Inquisitor.JsonApi.Page do
     |> Ecto.Query.offset(^offset)
     |> Ecto.Query.limit(^limit)
   end
+
+  def typecast_as_integer(integer) when is_binary(integer) do
+    String.to_integer(integer)
+  end
+  def typecast_as_integer(integer), do: integer
 end
