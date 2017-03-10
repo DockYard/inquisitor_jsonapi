@@ -1,24 +1,133 @@
-# InquisitorJsonapi
+# Inquisitor JSONAPI
 
-**TODO: Add description**
+Easily build composable queries for Ecto for JSON API endpoints using
+[Inquisitor](https://github.com/dockyard/inquisitor)
 
-## Installation
+[![Build Status](https://secure.travis-ci.org/DockYard/inquisitor_jsonapi.svg?branch=master)](http://travis-ci.org/DockYard/inquisitor_jsonapi)
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
+This plugin for [Inquisitor](https://github.com/dockyard/inquisitor)
+aims to implement all of the relevant [Fetching
+Data](http://jsonapi.org/format/#fetching) section for the [JSON API spec](http://jsonapi.org/)
 
-  1. Add `inquisitor_jsonapi` to your list of dependencies in `mix.exs`:
+[Make sure you reference Inquisitor's Usage section
+first](https://github.com/DockYard/inquisitor#usage)
 
-    ```elixir
-    def deps do
-      [{:inquisitor_jsonapi, "~> 0.1.0"}]
-    end
-    ```
+#### Progress
 
-  2. Ensure `inquisitor_jsonapi` is started before your application:
+* - [ ] [Include](http://jsonapi.org/format/#fetching-includes)
+* - [ ] [Field](http://jsonapi.org/format/#fetching-sparse-fieldsets)
+* - [x] [Sort](http://jsonapi.org/format/#fetching-sorting)
+* [Page](http://jsonapi.org/format/#fetching-pagination)
+  * - [x] `order,limit`
+  * - [x] `number,size`
+  * - [ ] `cursor`
+* - [x] [Filter](http://jsonapi.org/format/#fetching-filtering)
 
-    ```elixir
-    def application do
-      [applications: [:inquisitor_jsonapi]]
-    end
-    ```
+## Sort
 
+JSON API Sorting Plugin
+
+### Usage
+
+Use `Inquisitor.JsonApi.Sort` *after* `Inquisitor`
+
+```elixir
+defmodule MyApp.PostController do
+  use MyAp.Web, :controller
+  use Inquisitor
+  use Inquisitor.JsonApi.Sort
+
+  ...
+```
+
+[This plugin follows the spec for sorting with JSON
+API](http://jsonapi.org/format/#fetching-sorting). All requests should
+conform to that URL schema for this plugin to work.
+
+`[GET] http://example.com/posts?sort=-create,title`
+
+The plugin with correct apply `ASC` and `DESC` sort order to the built
+query.
+
+## Page
+
+JSON API Pagination Plugin
+
+### Usage
+
+Use `Inquisitor.JsonApi.Page` *after* `Inquisitor`
+
+```elixir
+defmodule MyApp.PostController do
+  use MyAp.Web, :controller
+  use Inquisitor
+  use Inquisitor.JsonApi.Page
+
+  ...
+```
+
+[This plugin follows the spec for pagination with JSON
+API](http://jsonapi.org/format/#fetching-pagination). All requests should
+conform to that URL schema for this plugin to work.
+
+`[GET] http://example.com/posts?page[limit]=10&page[offset]=2`
+`[GET] http://example.com/posts?page[size]=10&page[number]=2`
+
+Cursor pagination is not yet implemented.
+
+## Filter
+
+JSON API Filtering Plugin
+
+### Usage
+
+Use `Inquisitor.JsonApi.Filter` *after* `Inquisitor`
+
+```elixir
+defmodule MyApp.PostController do
+  use MyAp.Web, :controller
+  use Inquisitor
+  use Inquisitor.JsonApi.Filter
+
+  ...
+```
+
+[This plugin follows the spec for pagination with JSON
+API](http://jsonapi.org/format/#fetching-filtering). All requests should
+conform to that URL schema for this plugin to work.
+
+`[GET] http://example.com/posts?filter[name]=Brian&filter[age]=99`
+
+By default `Filter` is no-op. You must use the `deffilter` macro to
+provide the appropriate matchers:
+
+```elixir
+deffilter "name", name do
+  query
+  |> Ecto.Query.where([r], r.name == ^name)
+end
+```
+
+## Authors
+
+* [Brian Cardarella](http://twitter.com/bcardarella)
+
+[We are very thankful for the many contributors](https://github.com/dockyard/inquisitor_jsonapi/graphs/contributors)
+
+## Versioning
+
+This library follows [Semantic Versioning](http://semver.org)
+
+## Want to help?
+
+Please do! We are always looking to improve this library. Please see our
+[Contribution Guidelines](https://github.com/dockyard/inquisitor_jsonapi/blob/master/CONTRIBUTING.md)
+on how to properly submit issues and pull requests.
+
+## Legal
+
+[DockYard](http://dockyard.com/), Inc. &copy; 2017
+
+[@dockyard](http://twitter.com/dockyard)
+
+[Licensed under the MIT license](http://www.opensource.org/licenses/mit-license.php)
