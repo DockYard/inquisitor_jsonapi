@@ -50,7 +50,7 @@ defmodule Inquisitor.JsonApi.Filter do
     end
   end
 
-  defmacro __before_compile__(env) do
+  defmacro __before_compile__(_env) do
     quote do
       def build_query_filter(query, []), do: query
       def build_query_filter(query, [{_field, _value} | filters]) do
