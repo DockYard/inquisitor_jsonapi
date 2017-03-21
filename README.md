@@ -98,13 +98,12 @@ conform to that URL schema for this plugin to work.
 
 `[GET] http://example.com/posts?filter[name]=Brian&filter[age]=99`
 
-By default `Filter` is no-op. You must use the `deffilter` macro to
-provide the appropriate matchers:
+By default `Filter` is no-op. You must define a custom
+`build_filter_query/4` handler:
 
 ```elixir
-deffilter "name", name do
-  query
-  |> Ecto.Query.where([r], r.name == ^name)
+def build_filter_query(query, "name", name, _conn) do
+  Ecto.Query.where(query, [r], r.name == ^name)
 end
 ```
 

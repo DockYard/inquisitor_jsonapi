@@ -4,10 +4,8 @@ defmodule Inquisitor.JsonApi.Page do
 
   defmacro __using__(_opts) do
     quote do
-      def build_query(query, [{"page", pages} | tail]) do
-        query
-        |> build_query_page(pages)
-        |> build_query(tail)
+      def build_query(query, "page", pages, conn) do
+        build_page_query(query, pages, conn)
       end
 
       @before_compile Inquisitor.JsonApi.Page
@@ -16,7 +14,7 @@ defmodule Inquisitor.JsonApi.Page do
 
   defmacro __before_compile__(_env) do
     quote do
-      def build_query_page(query, %{"number" => number, "size" => size}) do
+      def build_page_query(query, %{"number" => number, "size" => size}, _conn) do
         number = Inquisitor.JsonApi.Page.typecast_as_integer(number)
         size   = Inquisitor.JsonApi.Page.typecast_as_integer(size)
 
@@ -24,12 +22,12 @@ defmodule Inquisitor.JsonApi.Page do
 
         Inquisitor.JsonApi.Page.offset_and_limit(query, offset: offset, limit: size)
       end
-      def build_query_page(query, %{"offset" => offset, "limit" => limit}) do
+      def build_page_query(query, %{"offset" => offset, "limit" => limit}, _conn) do
         Inquisitor.JsonApi.Page.offset_and_limit(query, offset: offset, limit: limit)
       end
-      def build_query_page(query, _), do: query
+      def build_page_query(query, _pages, _conn), do: query
 
-      defoverridable [build_query_page: 2]
+      defoverridable [build_page_query: 3]
     end
   end
 

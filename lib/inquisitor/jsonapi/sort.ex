@@ -3,7 +3,7 @@ defmodule Inquisitor.JsonApi.Sort do
 
   defmacro __using__(_opts) do
     quote do
-      def build_query(query, [{"sort", sorts} | tail]) do
+      def build_query(query, "sort", sorts, _conn) do
         sorts =
           sorts
           |> String.split(",")
@@ -12,9 +12,7 @@ defmodule Inquisitor.JsonApi.Sort do
             column -> {:asc, String.to_existing_atom(column)}
           end)
 
-        query
-        |> Ecto.Query.order_by(^sorts)
-        |> build_query(tail)
+        Ecto.Query.order_by(query, ^sorts)
       end
     end
   end
