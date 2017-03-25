@@ -15,11 +15,14 @@ defmodule InquisitorJsonapi.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger]]
+    [applications: applications(Mix.env())]
   end
 
   defp elixirc_paths(:test), do: elixirc_paths(:dev) |> Enum.concat(["test/support"])
   defp elixirc_paths(_), do: ["lib"]
+
+  defp applications(:test), do: applications(:dev) |> Enum.concat([:postgrex])
+  defp applications(_), do: [:logger, :inquisitor]
 
   # Dependencies can be Hex packages:
   #

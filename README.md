@@ -75,6 +75,20 @@ conform to that URL schema for this plugin to work.
 
 Cursor pagination is not yet implemented.
 
+You may need to calculate certain page data to generate pagination
+links. You can use `page_data/3` that this module `import`s for you.
+
+```elixir
+{query, page_data} =
+  User
+  |> build_query(conn, params)
+  |> page_data(repo, params)
+
+  links = build_links(page_data)
+  meta = build_meta(page_data)
+  users = Repo.all(query)
+```
+
 ## Filter
 
 JSON API Filtering Plugin

@@ -31,4 +31,46 @@ defmodule Inquisitor.JsonApi.PageTest do
     q = Base.build_query(User, @context, %{"page" => %{"offset" => 1, "limit" => 10}})
     assert to_sql(q) == {~s{SELECT u0."id", u0."name", u0."age" FROM "users" AS u0 LIMIT $1 OFFSET $2}, [10, 1]}
   end
+
+  test "calculates page data with `page[number]` and `page[size]`" do
+    Repo.insert!(%User{name: "Foo", age: 1})
+    Repo.insert!(%User{name: "Bar", age: 2})
+    Repo.insert!(%User{name: "Baz", age: 3})
+
+    params = %{"page" => %{"number" => "1", "size" => "10"}}
+
+    {_query, page_data} =
+      User
+      |> Base.build_query(@context, params)
+      |> Inquisitor.JsonApi.Page.Functions.page_data(Repo, params)
+
+    expected = %{
+      number: "1",
+      size: "10",
+      total: 3
+    }
+
+    assert expected == page_data
+  end
+
+  test "calculates page data with `page[offset]` and `page[limit]`" do
+    Repo.insert!(%User{name: "Foo", age: 1})
+    Repo.insert!(%User{name: "Bar", age: 2})
+    Repo.insert!(%User{name: "Baz", age: 3})
+
+    params = %{"page" => %{"offset" => "0", "limit" => "10"}}
+
+    {_query, page_data} =
+      User
+      |> Base.build_query(@context, params)
+      |> Inquisitor.JsonApi.Page.Functions.page_data(Repo, params)
+
+    expected = %{
+      number: "0",
+      size: "10",
+      total: 3
+    }
+
+    assert expected == page_data
+  end
 end

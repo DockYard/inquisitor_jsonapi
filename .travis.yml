@@ -9,3 +9,5 @@ cache:
   directories:
     - _build
     - deps
+before_script:
+  - MIX_ENV=test mix do ecto.drop, ecto.create, ecto.migrate

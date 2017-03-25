@@ -1,10 +1,33 @@
 defmodule Inquisitor.JsonApi.Page do
   require Inquisitor
-  require Ecto.Query
+  import Ecto.Query
+
+  defmodule Functions do
+    def page_data(query, repo, %{"page" => %{"number" => number, "size" => size}}) do
+      {query, %{number: number, size: size, total: total(query, repo)}}
+    end
+    def page_data(query, repo,  %{"page" => %{"offset" => offset, "limit" => limit}}) do
+      {query, %{number: offset, size: limit, total: total(query, repo)}}
+    end
+
+    defp total(query, repo) do
+      query
+      |> exclude(:offset)
+      |> exclude(:limit)
+      |> exclude(:preload)
+      |> exclude(:select)
+      |> exclude(:order_by)
+      |> subquery()
+      |> select(count("*"))
+      |> repo.one()
+      |> Kernel.||(0)
+    end
+  end
 
   defmacro __using__(_opts) do
     quote do
       def build_query(query, "page", pages, context) do
+        import Inquisitor.JsonApi.Page.Functions
         build_page_query(query, pages, context)
       end
 

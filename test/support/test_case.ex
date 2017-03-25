@@ -3,6 +3,11 @@ defmodule Inquisitor.JsonApi.TestCase do
     quote do
       use ExUnit.Case
       import Inquisitor.JsonApi.TestCase
+
+      setup do
+        Ecto.Adapters.SQL.Sandbox.mode(Repo, :manual)
+        :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
+      end
     end
   end
 
