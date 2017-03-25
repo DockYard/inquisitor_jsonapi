@@ -3,7 +3,7 @@ defmodule Inquisitor.JsonApi.Sort do
 
   defmacro __using__(_opts) do
     quote do
-      def build_query(query, "sort", sorts, _conn) do
+      def build_query(query, "sort", sorts, _context) do
         sorts =
           sorts
           |> String.split(",")
