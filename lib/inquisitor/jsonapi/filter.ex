@@ -36,9 +36,9 @@ defmodule Inquisitor.JsonApi.Filter do
 
   defmacro __using__(_opts) do
     quote do
-      def build_query(query, "filter", filters, conn) do
+      def build_query(query, "filter", filters, context) do
         Enum.reduce(filters, query, fn({key, value}, query) ->
-          build_filter_query(query, key, value, conn)
+          build_filter_query(query, key, value, context)
         end)
       end
 
@@ -48,7 +48,7 @@ defmodule Inquisitor.JsonApi.Filter do
 
   defmacro __before_compile__(_env) do
     quote do
-      def build_filter_query(query, _key, _value, _conn), do: query
+      def build_filter_query(query, _key, _value, _context), do: query
       defoverridable [build_filter_query: 4]
     end
   end
