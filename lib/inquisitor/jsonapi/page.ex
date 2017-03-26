@@ -4,10 +4,10 @@ defmodule Inquisitor.JsonApi.Page do
 
   defmodule Functions do
     def page_data(query, repo, %{"page" => %{"number" => number, "size" => size}}) do
-      {query, %{number: number, size: size, total: total(query, repo)}}
+      {query, %{number: typecast(number), size: typecast(size), total: total(query, repo)}}
     end
     def page_data(query, repo,  %{"page" => %{"offset" => offset, "limit" => limit}}) do
-      {query, %{number: offset, size: limit, total: total(query, repo)}}
+      {query, %{number: typecast(offset), size: typecast(limit), total: total(query, repo)}}
     end
 
     defp total(query, repo) do
@@ -21,6 +21,11 @@ defmodule Inquisitor.JsonApi.Page do
       |> select(count("*"))
       |> repo.one()
       |> Kernel.||(0)
+    end
+
+    defp typecast(integer) when is_integer(integer), do: integer
+    defp typecast(integer) when is_binary(integer) do
+      String.to_integer(integer)
     end
   end
 
