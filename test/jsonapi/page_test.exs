@@ -36,8 +36,9 @@ defmodule Inquisitor.JsonApi.PageTest do
     Repo.insert!(%User{name: "Foo", age: 1})
     Repo.insert!(%User{name: "Bar", age: 2})
     Repo.insert!(%User{name: "Baz", age: 3})
+    Repo.insert!(%User{name: "Qux", age: 4})
 
-    params = %{"page" => %{"number" => "1", "size" => "10"}}
+    params = %{"page" => %{"number" => "1", "size" => "2"}}
 
     {_query, page_data} =
       User
@@ -46,8 +47,9 @@ defmodule Inquisitor.JsonApi.PageTest do
 
     expected = %{
       number: 1,
-      size: 10,
-      total: 3
+      size: 2,
+      total: 2,
+      count: 4
     }
 
     assert expected == page_data
@@ -58,7 +60,7 @@ defmodule Inquisitor.JsonApi.PageTest do
     Repo.insert!(%User{name: "Bar", age: 2})
     Repo.insert!(%User{name: "Baz", age: 3})
 
-    params = %{"page" => %{"offset" => "0", "limit" => "10"}}
+    params = %{"page" => %{"offset" => "0", "limit" => "2"}}
 
     {_query, page_data} =
       User
@@ -67,8 +69,9 @@ defmodule Inquisitor.JsonApi.PageTest do
 
     expected = %{
       number: 0,
-      size: 10,
-      total: 3
+      size: 2,
+      total: 2,
+      count: 3
     }
 
     assert expected == page_data
