@@ -26,8 +26,9 @@ defmodule Inquisitor.JsonApi.Page do
 
   defmacro __using__(_opts) do
     quote do
+      import Inquisitor.JsonApi.Page.Functions
+
       def build_query(query, "page", pages, context) do
-        import Inquisitor.JsonApi.Page.Functions
         build_page_query(query, pages, context)
       end
 
