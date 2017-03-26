@@ -8,6 +8,8 @@ defmodule InquisitorJsonapi.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      elixirc_paths: elixirc_paths(Mix.env),
+     description: description(),
+     package: package(),
      deps: deps(),
      docs: [
        extras: ["pages/Default\ Query\ Scopes.md"]
@@ -19,6 +21,15 @@ defmodule InquisitorJsonapi.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     [applications: applications(Mix.env())]
+  end
+
+  defp description(), do: "JSON API Handlers for Inquisitor"
+
+  defp package() do
+    [maintainers: ["Brian Cardarella"],
+     licenses: ["MIT"],
+     links: %{"GitHub" => "https://github.com/DockYard/inquisitor_jsonapi"}
+   ]
   end
 
   defp elixirc_paths(:test), do: elixirc_paths(:dev) |> Enum.concat(["test/support"])
