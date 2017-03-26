@@ -15,21 +15,39 @@ defmodule Inquisitor.JsonApi.Filter do
         ...
       end
 
-  This module allows you to decide how you want to handle filter key/value parms.
+  This module allows you to decide how you want to handle filter key/value params.
   For example you may query your API with the following URL:
 
       https://example.com/posts?filter[foo]=bar&filter[baz]=qux
 
   You can use `build_filter_query/4` to define matchers:
 
-      deffilter "foo", value do
-        query
-        |> Ecto.Query.where([r], r.foo == ^value)
+      def build_filter_query(query, "foo", value, _conn) do
+        Ecto.Query.where(query, [r], r.foo == ^value)
       end
 
-      deffilter "baz", value do
-        query
-        |> Ecto.Query.where([r], r.baz > ^value)
+      def build_filter_query(query, "baz", value, _conn) do
+        Ecto.Query.where(query, [r], r.baz > ^value)
+      end
+
+  #### General key/value matcher
+
+  You may want a handler that simply queries on key/value pairs. Use the following:
+
+      def build_filter_query(query, key, value, _conn) do
+        Ecto.Query.where(query, [r], Ecto.Query.API.field(r, ^String.to_existing_atom(key)) == ^value)
+      end
+
+  #### Security
+
+  This module is secure by default. Meaning that you must opt-in to handle the filter params.
+  Otherwise they are ignored by the query builder.
+
+  If you would like to limit the values to act upon use a `guard`:
+
+      @filter_whitelist ~w(name title)
+      def build_filter_query(query, key, value, _conn) where key in @filter_whitelist do
+        Ecto.Query.where(query, [r], Ecto.Query.API.field(r, ^String.to_existing_atom(key)) == ^value)
       end
   """
   require Inquisitor
