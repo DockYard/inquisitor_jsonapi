@@ -2,7 +2,7 @@ defmodule Inquisitor.JsonApi.Include do
   @moduledoc """
   Inquisitor query handlers for JSON API includes
 
-  JSON API Spec: http://jsonapi.org/format/#fetching-includes
+  [JSON API Spec](http://jsonapi.org/format/#fetching-includes)
 
   #### Usage
 
@@ -82,6 +82,15 @@ defmodule Inquisitor.JsonApi.Include do
     end
   end
 
+  @doc """
+  Parse path segments into nested keyword list
+
+  Example:
+      "foo.bar.baz.qux"
+      |> preload_parser()
+
+      > [foo: [bar: [baz: :qux]]]
+  """
   def preload_parser(path) do
     path
     |> String.split(".")

@@ -2,7 +2,7 @@ defmodule Inquisitor.JsonApi.Filter do
   @moduledoc """
   Inquisitor query handlers for JSON API filters
 
-  JSON API Spec: http://jsonapi.org/format/#fetching-filtering
+  [JSON API Spec](http://jsonapi.org/format/#fetching-filtering)
 
   #### Usage
 

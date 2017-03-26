@@ -40,10 +40,10 @@ defmodule Inquisitor.JsonApi.PageTest do
 
     params = %{"page" => %{"number" => "1", "size" => "2"}}
 
-    {_query, page_data} =
+    page_data =
       User
       |> Base.build_query(@context, params)
-      |> Inquisitor.JsonApi.Page.Functions.page_data(Repo, params)
+      |> Inquisitor.JsonApi.Page.page_data(Repo, params)
 
     expected = %{
       number: 1,
@@ -62,10 +62,10 @@ defmodule Inquisitor.JsonApi.PageTest do
 
     params = %{"page" => %{"offset" => "0", "limit" => "2"}}
 
-    {_query, page_data} =
+    page_data =
       User
       |> Base.build_query(@context, params)
-      |> Inquisitor.JsonApi.Page.Functions.page_data(Repo, params)
+      |> Inquisitor.JsonApi.Page.page_data(Repo, params)
 
     expected = %{
       number: 0,

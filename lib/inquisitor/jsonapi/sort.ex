@@ -1,4 +1,20 @@
 defmodule Inquisitor.JsonApi.Sort do
+  @moduledoc """
+  Inquisitor query handlers for JSON API sorting
+
+  [JSON API Spec](http://jsonapi.org/format/#fetching-sorting)
+
+  #### Usage
+
+  `use` the module *after* the `Inquisitor` module:
+
+      defmodule MyApp do
+        use Inquisitor
+        use Inquisitor.JsonApi.Sort
+
+        ...
+      end
+  """
   require Inquisitor
 
   defmacro __using__(_opts) do
