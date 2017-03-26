@@ -14,7 +14,7 @@ first](https://github.com/DockYard/inquisitor#usage)
 
 #### Progress
 
-* - [ ] [Include](http://jsonapi.org/format/#fetching-includes)
+* - [x] [Include](http://jsonapi.org/format/#fetching-includes)
 * - [ ] [Field](http://jsonapi.org/format/#fetching-sparse-fieldsets)
 * - [x] [Sort](http://jsonapi.org/format/#fetching-sorting)
 * [Page](http://jsonapi.org/format/#fetching-pagination)
@@ -22,6 +22,31 @@ first](https://github.com/DockYard/inquisitor#usage)
   * - [x] `number,size`
   * - [ ] `cursor`
 * - [x] [Filter](http://jsonapi.org/format/#fetching-filtering)
+
+## Include
+
+JSON API Include (Ecto preload) Plugin
+
+### Usage
+
+Use `Inquisitor.JsonApi.Include` *after* `Inquisitor`
+
+```elixir
+defmodule MyApp.PostController do
+  use MyAp.Web, :controller
+  use Inquisitor
+  use Inquisitor.JsonApi.Include
+
+  ...
+```
+
+[This plugin follows the spec for sorting with JSON
+API](http://jsonapi.org/format/#fetching-includes). All requests should
+conform to that URL schema for this plugin to work.
+
+`[GET] http://example.com/posts?include=tags,author`
+
+Refer to the Docs for this module on how to enable preloading properly.
 
 ## Sort
 
