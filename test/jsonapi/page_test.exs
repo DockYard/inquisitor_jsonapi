@@ -45,8 +45,8 @@ defmodule Inquisitor.JsonApi.PageTest do
       |> Inquisitor.JsonApi.Page.Functions.page_data(Repo, params)
 
     expected = %{
-      number: "1",
-      size: "10",
+      number: 1,
+      size: 10,
       total: 3
     }
 
@@ -66,8 +66,8 @@ defmodule Inquisitor.JsonApi.PageTest do
       |> Inquisitor.JsonApi.Page.Functions.page_data(Repo, params)
 
     expected = %{
-      number: "0",
-      size: "10",
+      number: 0,
+      size: 10,
       total: 3
     }
 
