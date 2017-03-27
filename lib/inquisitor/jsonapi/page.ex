@@ -32,7 +32,7 @@ defmodule Inquisitor.JsonApi.Page do
   end
 
   defmacro __before_compile__(_env) do
-    quote do
+    quote generated: true do
       def build_page_query(query, %{"number" => number, "size" => size}, _context) do
         number = Inquisitor.JsonApi.Page.typecast_as_integer(number)
         size   = Inquisitor.JsonApi.Page.typecast_as_integer(size)

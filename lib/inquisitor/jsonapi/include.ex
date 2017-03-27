@@ -76,7 +76,7 @@ defmodule Inquisitor.JsonApi.Include do
   end
 
   defmacro __before_compile__(_env) do
-    quote do
+    quote generated: true do
       def build_include_query(query, include, context), do: query
       defoverridable [build_include_query: 3]
     end

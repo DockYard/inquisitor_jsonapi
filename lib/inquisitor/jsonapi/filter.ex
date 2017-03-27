@@ -65,7 +65,7 @@ defmodule Inquisitor.JsonApi.Filter do
   end
 
   defmacro __before_compile__(_env) do
-    quote do
+    quote generated: true do
       def build_filter_query(query, _key, _value, _context), do: query
       defoverridable [build_filter_query: 4]
     end
