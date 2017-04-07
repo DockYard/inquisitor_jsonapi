@@ -42,8 +42,7 @@ defmodule Inquisitor.JsonApi.Include do
   For the given include of `author.profile` the result of `Inquisitor.JsonApi.Include.preload_parser/1`
   would be `[author: :profile]`. The parser can handle infinite depths:
 
-      "foo.bar.baz.qux"
-      |> preload_parser()
+      preload_parser("foo.bar.baz.qux")
 
       > [foo: [bar: [baz: :qux]]]
 
