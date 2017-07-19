@@ -1,9 +1,9 @@
-# Inquisitor JSONAPI
+# Inquisitor JSONAPI [![Build Status](https://secure.travis-ci.org/DockYard/inquisitor_jsonapi.svg?branch=master)](http://travis-ci.org/DockYard/inquisitor_jsonapi)
 
 Easily build composable queries for Ecto for JSON API endpoints using
 [Inquisitor](https://github.com/dockyard/inquisitor)
 
-[![Build Status](https://secure.travis-ci.org/DockYard/inquisitor_jsonapi.svg?branch=master)](http://travis-ci.org/DockYard/inquisitor_jsonapi)
+**[Inquisitor JSONAPI is built and maintained by DockYard, contact us for expert Elixir and Phoenix consulting](https://dockyard.com/phoenix-consulting)**.
 
 This plugin for [Inquisitor](https://github.com/dockyard/inquisitor)
 aims to implement all of the relevant [Fetching
